@@ -1,3 +1,6 @@
 [submodule "sysreg2018"]
 	path = sysreg2018
 	url = https://github.com/rubenhm/sysreg2018.git
+[submodule "sysreg2019"]
+	path = sysreg2019
+	url = https://github.com/rubenhm/sysreg2019.git
