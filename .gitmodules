@@ -4,3 +4,9 @@
 [submodule "sysreg2019"]
 	path = sysreg2019
 	url = https://github.com/rubenhm/sysreg2019.git
+[submodule "fdic2022"]
+	path = fdic2022
+	url = git@github.com:rubenhm/fdic2022.git
+[submodule "fedcomms"]
+	path = fedcomms
+	url = git@github.com:rubenhm/fedcomms.git
