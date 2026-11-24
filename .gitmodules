@@ -10,3 +10,6 @@
 [submodule "fedcomms"]
 	path = fedcomms
 	url = git@github.com:rubenhm/fedcomms.git
+[submodule "marimo2025"]
+	path = marimo2025
+	url = https://github.com/rubenhm/marimo-talk-2025.git
