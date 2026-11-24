@@ -2,13 +2,49 @@
 <html lang="en">
 
 <head>
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-KTHTSBRKDY"></script>
-  <script>
+  <!-- Consent banner (same TermsFeed script Quarto uses on the main site,
+       self-hosted). GA4 runs only after the visitor opts in. -->
+  <script src="assets/js/cookie-consent.js"></script>
+  <link rel="stylesheet" href="assets/css/cookie-consent.css">
+  <script type="text/plain" cookie-consent="tracking">
+    (function () {
+      var s = document.createElement("script");
+      s.async = true;
+      s.src = "https://www.googletagmanager.com/gtag/js?id=G-KTHTSBRKDY";
+      document.head.appendChild(s);
+    })();
     window.dataLayer = window.dataLayer || [];
     function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
-    gtag('config', 'G-KTHTSBRKDY');
+    gtag("js", new Date());
+    gtag("config", "G-KTHTSBRKDY");
+  </script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      cookieconsent.run({
+        notice_banner_type: "simple",
+        consent_type: "express",
+        palette: "light",
+        language: "en",
+        page_load_consent_levels: ["strictly-necessary"],
+        notice_banner_reject_button_hide: false,
+        preferences_center_close_button_hide: false,
+        website_name: ""
+      });
+      // Replace the stock wording ("targeted ads"), which doesn't apply here.
+      function fix() {
+        var title = document.querySelector(".cc-nb-title");
+        var text = document.querySelector(".cc-nb-text");
+        if (!title || !text) return false;
+        title.textContent = "Analytics cookies";
+        text.textContent = "With your consent, this site uses Google Analytics to count visits " +
+          "and see which pages are read. No ads and no personalised content. You can change " +
+          "your choice any time with “Cookie Preferences” at the bottom of every page.";
+        return true;
+      }
+      if (fix()) return;
+      var mo = new MutationObserver(function () { if (fix()) mo.disconnect(); });
+      mo.observe(document.body, { childList: true, subtree: true });
+    });
   </script>
 
   <meta charset="utf-8">
@@ -18,22 +54,24 @@
   <meta name="description" content="Slides from previous seminars and conference discussions by Rubén Hernández-Murillo.">
   <link rel="canonical" href="https://rubenhm.org/talks/">
 
-  <!-- Same faces as the main site's _brand.yml -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mate&family=Merriweather:ital,wght@0,300;0,700;1,300&family=Source+Sans+3:wght@600&display=swap">
-  <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
 
   <!-- Popover polyfill only where the browser lacks native support. -->
   <script>
     if (!Object.hasOwn(HTMLElement.prototype, "popover")) {
       const s = document.createElement("script");
-      s.src = "https://unpkg.com/@oddbird/popover-polyfill@latest/dist/popover.min.js";
+      s.src = "assets/js/popover.min.js";
       document.head.append(s);
     }
   </script>
 
   <style>
+    /* Self-hosted fonts (assets/fonts, SIL OFL): no request to Google. */
+    @font-face { font-family: "Merriweather"; src: url("assets/fonts/merriweather-300-normal.woff2") format("woff2"); font-weight: 300; font-style: normal; font-display: swap; }
+    @font-face { font-family: "Merriweather"; src: url("assets/fonts/merriweather-300-italic.woff2") format("woff2"); font-weight: 300; font-style: italic; font-display: swap; }
+    @font-face { font-family: "Merriweather"; src: url("assets/fonts/merriweather-700-normal.woff2") format("woff2"); font-weight: 700; font-style: normal; font-display: swap; }
+    @font-face { font-family: "Mate"; src: url("assets/fonts/mate-400-normal.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: "Source Sans 3"; src: url("assets/fonts/source-sans-3-600-normal.woff2") format("woff2"); font-weight: 600; font-style: normal; font-display: swap; }
+
     /* Palette mirrors website-source/_brand.yml. This page lives in its own
        repo (rubenhm/talks), so it can't share the Quarto site's CSS. */
     :root {
@@ -338,6 +376,23 @@
     .site-footer p { margin: 0; }
     .site-footer p a { color: var(--slate); }
 
+    .icon { inline-size: auto; block-size: 1em; vertical-align: -0.125em; }
+
+    .footer-prefs { color: var(--slate); }
+
+    /* Consent banner in brand colours (its CSS is injected later, so the
+       selectors carry html body). */
+    html body .termsfeed-com---palette-light.termsfeed-com---nb {
+      background-color: var(--paper-deep); color: var(--ink);
+      border-top: 4px solid var(--ur-navy); box-shadow: 0 -4px 24px rgb(31 35 40 / 0.12);
+    }
+    html body .termsfeed-com---palette-light .cc-nb-title { color: var(--ur-navy); font-family: var(--sans); font-weight: 600; }
+    html body .termsfeed-com---palette-light .cc-nb-text { color: var(--ink); font-family: var(--sans); }
+    html body .termsfeed-com---palette-light :is(.cc-nb-okagree, .cc-nb-reject, .cc-nb-changep) { font-family: var(--sans); border-radius: 0.3rem; font-weight: 600; }
+    html body .termsfeed-com---palette-light .cc-nb-okagree { background-color: var(--ur-navy); color: #fff; }
+    html body .termsfeed-com---palette-light .cc-nb-reject { background-color: transparent; color: var(--ur-navy); box-shadow: inset 0 0 0 1.5px var(--ur-navy); }
+    html body .termsfeed-com---palette-light .cc-nb-changep { background-color: transparent; color: var(--slate); text-decoration: underline; }
+
     @media (forced-colors: active) {
       .talk-when::before, .site-footer::before { forced-color-adjust: none; }
       .site-menu a[aria-current="page"] { text-decoration-color: LinkText; }
@@ -359,7 +414,7 @@
       <nav class="site-nav" aria-label="Primary">
         <button class="menu-button" type="button" popovertarget="site-menu"
           popovertargetaction="toggle" aria-controls="site-menu">
-          <iconify-icon icon="bi:list" aria-hidden="true"></iconify-icon>
+          <svg aria-hidden="true" focusable="false" class="icon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16"><path fill="currentColor" fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/></svg>
           <span>Menu</span>
         </button>
         <ul id="site-menu" class="site-menu" popover="auto">
@@ -428,13 +483,14 @@
   <footer class="site-footer">
     <div class="footer-inner">
       <div class="footer-icons">
-        <a href="https://rubenhm.org/cv/" title="CV"><iconify-icon icon="academicons:cv" aria-label="CV"></iconify-icon></a>
-        <a href="https://www.linkedin.com/in/rubenhernandezmurillo" title="LinkedIn"><iconify-icon icon="bi:linkedin" aria-label="LinkedIn"></iconify-icon></a>
-        <a href="https://github.com/rubenhm" title="GitHub"><iconify-icon icon="bi:github" aria-label="GitHub"></iconify-icon></a>
-        <a href="https://ideas.repec.org/e/phe35.html" title="Ideas RePEc"><iconify-icon icon="academicons:ideas-repec" aria-label="Ideas RePEc"></iconify-icon></a>
-        <a href="https://scholar.google.com/citations?user=ONu4SBcAAAAJ" title="Google Scholar"><iconify-icon icon="academicons:google-scholar-square" aria-label="Google Scholar"></iconify-icon></a>
-        <a href="https://orcid.org/0000-0001-6474-9510" title="ORCID"><iconify-icon icon="simple-icons:orcid" aria-label="ORCID"></iconify-icon></a>
+        <a href="https://rubenhm.org/cv/" title="CV" aria-label="CV"><svg aria-hidden="true" focusable="false" class="icon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 512 512"><path fill="currentColor" d="M249.18 328.324c-9.788 15.384-19.179 30.434-40.222 45.055c-11.256 7.89-37.164 23.306-73.99 23.306C64.709 396.685 8 345.605 8 255.801c0-78.486 53.345-140.486 128.466-140.486c30.434 0 57.474 10.521 77.387 26.304c18.414 14.65 27.038 29.304 34.563 42.456l-52.58 26.273c-3.762-8.626-8.29-17.649-19.913-27.406c-12.784-10.155-25.54-13.152-36.46-13.152c-42.821 0-65.364 39.825-65.364 84.145c0 58.238 29.7 87.143 65.364 87.143c34.563 0 48.48-24.042 57.474-39.426zm184.194-204.75H504l-92.037 265.22h-67.597l-90.904-265.22h70.625l54.843 188.6z"/></svg></a>
+        <a href="https://www.linkedin.com/in/rubenhernandezmurillo" title="LinkedIn" aria-label="LinkedIn"><svg aria-hidden="true" focusable="false" class="icon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16"><path fill="currentColor" d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248c-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586c.173-.431.568-.878 1.232-.878c.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252c-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z"/></svg></a>
+        <a href="https://github.com/rubenhm" title="GitHub" aria-label="GitHub"><svg aria-hidden="true" focusable="false" class="icon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59c.4.07.55-.17.55-.38c0-.19-.01-.82-.01-1.49c-2.01.37-2.53-.49-2.69-.94c-.09-.23-.48-.94-.82-1.13c-.28-.15-.68-.52-.01-.53c.63-.01 1.08.58 1.23.82c.72 1.21 1.87.87 2.33.66c.07-.52.28-.87.51-1.07c-1.78-.2-3.64-.89-3.64-3.95c0-.87.31-1.59.82-2.15c-.08-.2-.36-1.02.08-2.12c0 0 .67-.21 2.2.82c.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82c.44 1.1.16 1.92.08 2.12c.51.56.82 1.27.82 2.15c0 3.07-1.87 3.75-3.65 3.95c.29.25.54.73.54 1.48c0 1.07-.01 1.93-.01 2.2c0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/></svg></a>
+        <a href="https://ideas.repec.org/e/phe35.html" title="Ideas RePEc" aria-label="Ideas RePEc"><svg aria-hidden="true" focusable="false" class="icon" xmlns="http://www.w3.org/2000/svg" width="0.75em" height="1em" viewBox="0 0 384 512"><path fill="currentColor" d="m252.879 446.324l-94.223 25.247c-6.713 1.798-13.676-2.222-15.475-8.935c-1.798-6.712 2.222-13.676 8.934-15.474l94.223-25.247c6.713-1.798 13.676 2.221 15.475 8.934c1.8 6.713-2.222 13.676-8.934 15.475m-43.626-289.558c-.844 11.486-7.341 17.96-17.428 17.796c-10.043-.162-17.352-7.045-17.111-17.526c.234-10.198 6.628-16.897 17.505-16.778c10.87.117 16.258 6.54 17.034 16.508m120.795-38.71C292.565 56.148 218.325 26.069 149.354 46.22C88.995 63.856 49.64 103.71 35.33 165.003c-14.164 60.666 3.466 112.846 48.085 156.545c10.464 10.249 20.085 22.663 25.984 35.91c5.914 13.278 7.81 17.43 22.215 13.944c20.006-4.841 39.744-10.787 59.746-15.646c10.254-2.491 14.15-8.216 14.082-18.553c-.274-41.72-.182-83.443-.03-125.164c.033-9.444-2.935-17.22-13.096-17.456c-10.286-.239-13.435 7.277-13.349 16.905c.238 27.049.072 54.1.07 81.15c-.001 43.515 0 43.515-42.787 49.767c-16.266-18.638-31.078-35.392-45.653-52.351c-52.31-60.866-42.744-150.842 22.543-197.443c46.904-33.481 97.29-35.344 147.525-7.075c46.644 26.25 72.02 80.33 65.294 132.645c-4.493 34.948-21.181 62.845-45.933 86.826c-14.938 14.473-28.55 30.055-33.45 50.982c-2.292 9.788-7.78 14.643-17.262 16.98c1.772-1.647-102.202 27.486-102.202 27.486c-6.578 1.762-10.517 8.586-8.754 15.163l.271 1.017c1.763 6.577 8.586 10.517 15.164 8.755c0 0 119.3-32.058 120.864-32.501c11.048-3.05 17.061-10.915 17.313-22.141c.376-16.759 7.658-29.803 19.508-40.938c6.344-5.962 12.66-11.977 18.63-18.306c49.276-52.263 57.408-131.562 19.94-193.449z"/></svg></a>
+        <a href="https://scholar.google.com/citations?user=ONu4SBcAAAAJ" title="Google Scholar" aria-label="Google Scholar"><svg aria-hidden="true" focusable="false" class="icon" xmlns="http://www.w3.org/2000/svg" width="0.88em" height="1em" viewBox="0 0 448 512"><path fill="currentColor" d="M48 32C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm140.695 64h178.24l-16.47 12.86v22.693c6.116.785 5.469 4.46 5.469 8.857v107.223c0 4.965-4.062 9.03-9.028 9.03h-3.324c-4.966 0-9.03-4.065-9.03-9.03V140.41c0-4.408-.64-8.086 5.522-8.861v-14.266l-47.424 38.893c.548 1.016 1.068 1.667 1.563 2.52c4.167 7.377 6.289 16.548 6.289 27.76c0 8.592-1.432 16.314-4.336 23.13c-2.89 6.817-6.407 12.384-10.508 16.674c-4.101 4.304-8.215 8.236-12.33 11.777c-4.113 3.548-7.629 7.247-10.508 11.088c-2.901 3.828-4.347 7.787-4.347 11.889c0 4.108 1.876 8.28 5.613 12.486c3.724 4.219 8.305 8.306 13.723 12.344c5.429 4.01 10.846 8.463 16.263 13.306c5.43 4.836 9.987 11.061 13.711 18.621c3.75 7.586 5.625 15.938 5.625 25.118c0 12.109-3.087 23.046-9.246 32.779c-6.172 9.693-14.219 17.429-24.101 23.1c-9.91 5.709-20.508 10.006-31.809 12.91c-11.328 2.877-22.565 4.322-33.79 4.322a139 139 0 0 1-21.421-1.666c-7.212-1.12-14.438-3.098-21.717-5.885c-7.291-2.806-13.75-6.25-19.35-10.39c-5.611-4.095-10.13-9.382-13.593-15.82c-3.464-6.44-5.184-13.68-5.184-21.72c0-9.538 2.657-18.385 7.983-26.634c5.325-8.19 12.382-15.026 21.158-20.442c15.313-9.525 39.336-15.41 72.031-17.636c-7.473-9.343-11.223-18.14-11.223-26.37c0-4.682 1.222-9.7 3.645-15.117a87 87 0 0 1-12.031.854c-17.563 0-32.396-5.71-44.44-17.207c-12.044-11.479-18.058-25.846-18.058-43.217c0-1.816.052-3.419.181-5.19H81.064zm31.38 38.334c-11.2 0-19.793 4.029-25.782 12.07q-8.983 12.03-8.984 29.147c0 9.72 1.64 19.616 4.921 29.707c3.269 10.085 8.622 19.09 16.122 27.025c7.473 7.956 16.171 11.926 26.054 11.926c11.016 0 19.623-3.69 25.795-11.072c6.145-7.37 9.23-16.674 9.23-27.88c0-9.544-1.626-19.536-4.894-29.986c-3.256-10.462-8.685-19.902-16.264-28.306c-7.552-8.432-16.303-12.631-26.199-12.631m18.517 172.08c-8.035 0-15.94.712-23.7 2.13c-7.76 1.38-15.416 3.71-22.968 6.999c-7.579 3.27-13.698 8.075-18.36 14.43c-4.687 6.346-7.02 13.821-7.02 22.422c0 8.195 2.06 15.506 6.175 21.873c4.102 6.327 9.518 11.284 16.25 14.832c6.732 3.554 13.789 6.236 21.158 8c7.383 1.751 14.897 2.664 22.553 2.664c15.142 0 28.175-3.411 39.113-10.229c10.91-6.816 16.38-17.342 16.38-31.549c0-2.988-.416-5.932-1.237-8.802q-1.288-4.357-2.538-7.454c-.833-2.025-2.421-4.467-4.765-7.279a368 368 0 0 0-5.315-6.289c-1.224-1.432-3.512-3.477-6.886-6.18c-3.345-2.713-5.48-4.405-6.432-5.03h-.002c-.938-.658-3.372-2.436-7.291-5.321q-5.877-4.365-6.445-4.637c-2.058-.37-4.946-.58-8.67-.58"/></svg></a>
+        <a href="https://orcid.org/0000-0001-6474-9510" title="ORCID" aria-label="ORCID"><svg aria-hidden="true" focusable="false" class="icon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M12 0C5.372 0 0 5.372 0 12s5.372 12 12 12s12-5.372 12-12S18.628 0 12 0M7.369 4.378c.525 0 .947.431.947.947s-.422.947-.947.947a.95.95 0 0 1-.947-.947c0-.525.422-.947.947-.947m-.722 3.038h1.444v10.041H6.647zm3.562 0h3.9c3.712 0 5.344 2.653 5.344 5.025c0 2.578-2.016 5.025-5.325 5.025h-3.919zm1.444 1.303v7.444h2.297c3.272 0 4.022-2.484 4.022-3.722c0-2.016-1.284-3.722-4.097-3.722z"/></svg></a>
       </div>
+      <p><a href="#" id="open_preferences_center" class="footer-prefs">Cookie Preferences</a></p>
       <p>Slides made with reveal.js, R Markdown, and Quarto. Site design inspired by <a href="https://www.andrewheiss.com/">Andrew Heiss</a> and <a href="https://www.jhelvy.com/">John Helveston</a>.</p>
     </div>
   </footer>
