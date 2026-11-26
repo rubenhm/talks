@@ -13,3 +13,31 @@
 [submodule "marimo2025"]
 	path = marimo2025
 	url = https://github.com/rubenhm/marimo-talk-2025.git
+[submodule "econ-update"]
+	path = econ-update
+	url = https://github.com/rubenhm/econ-update.git
+	branch = main
+[submodule "reproducible-research-2017"]
+	path = reproducible-research-2017
+	url = https://github.com/rubenhm/reproducible-research-2017.git
+	branch = main
+[submodule "reproducible-research-2021"]
+	path = reproducible-research-2021
+	url = https://github.com/rubenhm/reproducible-research-2021.git
+	branch = main
+[submodule "sysreg2017"]
+	path = sysreg2017
+	url = https://github.com/rubenhm/sysreg2017.git
+	branch = main
+[submodule "tm-presentation-machine"]
+	path = tm-presentation-machine
+	url = https://github.com/rubenhm/tm-presentation-machine.git
+	branch = main
+[submodule "tm-topics"]
+	path = tm-topics
+	url = https://github.com/rubenhm/tm-topics.git
+	branch = main
+[submodule "tm-trade-deficit"]
+	path = tm-trade-deficit
+	url = https://github.com/rubenhm/tm-trade-deficit.git
+	branch = main
